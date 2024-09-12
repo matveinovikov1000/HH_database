@@ -4,14 +4,24 @@ import requests
 def get_company():
     """Функция для получения работодателей с HH.ru"""
 
-    url_hh = 'https://api.hh.ru/vacancies'
+    url_hh = "https://api.hh.ru/vacancies"
     vacancies_hh = requests.get(url_hh, params={"currency": "RUR", "host": "hh.ru"}).json()
     company_list = []
     for i in range(0, 15):
-        if {"id": vacancies_hh["items"][i]["employer"]["id"], "name": vacancies_hh["items"][i]["employer"]["name"], "url": vacancies_hh["items"][i]["employer"]["url"]} in company_list:
+        if {
+            "id": vacancies_hh["items"][i]["employer"]["id"],
+            "name": vacancies_hh["items"][i]["employer"]["name"],
+            "url": vacancies_hh["items"][i]["employer"]["url"],
+        } in company_list:
             continue
         else:
-            company_list.append({"id": vacancies_hh["items"][i]["employer"]["id"], "name": vacancies_hh["items"][i]["employer"]["name"], "url": vacancies_hh["items"][i]["employer"]["url"]})
+            company_list.append(
+                {
+                    "id": vacancies_hh["items"][i]["employer"]["id"],
+                    "name": vacancies_hh["items"][i]["employer"]["name"],
+                    "url": vacancies_hh["items"][i]["employer"]["url"],
+                }
+            )
     return company_list
 
 
@@ -37,7 +47,7 @@ def get_vacancies_transform(vacancies):
 
     vacancies_transform_list = []
     for item in vacancies:
-        company_id = item['employer']['id']
+        company_id = item["employer"]["id"]
         company = item["employer"]["name"]
         job_title = item["name"]
         link_to_vacancy = item["employer"]["alternate_url"]
@@ -59,17 +69,19 @@ def get_vacancies_transform(vacancies):
 
         description = item["snippet"]["responsibility"]
         requirement = item["snippet"]["requirement"]
-        vacancies_transform_list.append({
-                    "company_id": company_id,
-                    "company_name": company,
-                    "job_title": job_title,
-                    "link_to_vacancy": link_to_vacancy,
-                    "salary_from": salary_from,
-                    "salary_to": salary_to,
-                    "currency": currency,
-                    "description": description,
-                    "requirement": requirement
-                })
+        vacancies_transform_list.append(
+            {
+                "company_id": company_id,
+                "company_name": company,
+                "job_title": job_title,
+                "link_to_vacancy": link_to_vacancy,
+                "salary_from": salary_from,
+                "salary_to": salary_to,
+                "currency": currency,
+                "description": description,
+                "requirement": requirement,
+            }
+        )
     return vacancies_transform_list
 
 

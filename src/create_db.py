@@ -16,16 +16,19 @@ def create_db_tb(database_name, params):
     conn = psycopg2.connect(dbname=database_name, **params)
 
     with conn.cursor() as cur:
-        cur.execute("""
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS companies (
                 company_id INTEGER PRIMARY KEY,
                 company_name VARCHAR(255) NOT NULL,
                 link_to_company TEXT
             )
-        """)
+        """
+        )
 
     with conn.cursor() as cur:
-        cur.execute("""
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS vacancies (
                 vacancy_id SERIAL PRIMARY KEY,
                 company_id INTEGER REFERENCES companies(company_id),
@@ -38,7 +41,8 @@ def create_db_tb(database_name, params):
                 description TEXT NULL,
                 requirement TEXT NULL
             )
-        """)
+        """
+        )
 
     conn.commit()
     conn.close()
